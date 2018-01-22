@@ -33,6 +33,27 @@ class Product{
                   echo $sql . "<br>" . $e->getMessage();
              }
      }
+     public static function deleteByID($id){
+          try {
+               $servername = "127.0.0.1";
+               $username = "root";
+               $password = "root";
+               $dbname = "db_fbg6lI9ggNuXRWvs";
+
+               $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+               $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+               $sql = "UPDATE products SET status = -1 WHERE id = " . $id . ";";
+
+               $stmt = $conn->prepare($sql);
+               $stmt->execute();
+
+               echo $stmt->rowCount() . " records UPDATED successfully";
+          }
+          catch(PDOException $e)
+          {
+               echo $sql . "<br>" . $e->getMessage();
+          }
+     }
 
      public static function idExists($id){
           $servername = "127.0.0.1";
@@ -72,7 +93,7 @@ class Product{
           try {
               $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
               $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-              $stmt = $conn->prepare("SELECT * FROM products;");
+              $stmt = $conn->prepare("SELECT * FROM products WHERE status > 0;");
               $stmt->execute();
 
               // set the resulting array to associative

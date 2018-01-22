@@ -1,42 +1,66 @@
-<h1>Json Array</h1>
-<?php
-include_once("product.php");
+<!DOCTYPE html>
+<html>
+     <head>
+          <meta charset="utf-8">
+          <title></title>
+     </head>
+     <body>
+          <h1>Json Array</h1>
+          <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
 
-echo Product::fetchAllJson();
-?>
-<br><br>
+          <script type="text/javascript">
+          $.ajax({url: "seeall_api.php", success: function(result){
+               console.log("json written in the file");
+          }});
 
-<script type="text/javascript">
-     var json = '[{"id":"1","name":"TV Samsung 40","price":"5000.99","date_created":"2018-01-21 23:57:34","status":"1"},{"id":"2","name":"TV Samsung 32","price":"3400.99","date_created":"2018-01-21 23:57:34","status":"1"},{"id":"3","name":"Notebook Dell","price":"7000.00","date_created":"2018-01-21 23:57:34","status":"1"},{"id":"4","name":"Hamburguesas Caseras","price":"45.00","date_created":"2018-01-21 23:57:34","status":"1"},{"id":"5","name":"Monitor LG","price":"2799.99","date_created":"2018-01-21 23:57:34","status":"1"}]';
-     var jsonArray;
+          $.getJSON("database_products.json", function(data){
+               console.log(data);
+               var productData;
+               $.each(data, function(key, value){
+                    productData += '<tr id="' + value.id + '">';
+                    productData += "<td>" + value.id + "</td>";
+                    productData += "<td>" + value.name + "</td>";
+                    productData += "<td>" + value.price + "</td>";
+                    productData += "<td>" + value.date_created + "</td>";
+                    productData += '<td><button onclick="deleteByID(' + value.id + ')">ELIMINAR</button> </td>';
+                    productData += "</tr>";
+               });
 
-     jsonArray = JSON.parse(json);
-     console.log(jsonArray);
-     console.log(json);
-
-     $.getJSON(json, function(data){
-          var productData;
-          $.each(data, function(key, value){
-               https://www.youtube.com/watch?v=AOfSuajwY-I
+               $("#productsTable").append(productData);
           });
-     });
-</script>
+          /*
+          $(document).ready(function(){
+          });
+          */
+          </script>
 
+          <script type="text/javascript">
+          function deleteByID(id){
+               var urlFormatted = "delete_by_id_api.php?id=" + id;
+               console.log(urlFormatted);
 
-<table>
-     <thead>
-          <th>id</th>
-          <th>name</th>
-          <th>price</th>
-          <th>dateCreated</th>
-          <th>status</th>
-          <th>Action</th>
-     </thead>
-     <tbody>
-          <td>adsda</td>
-          <td>adsda</td>
-          <td></td>
-          <td></td>
-          <td>adsw</td>
-     </tbody>
-</table>
+               $.ajax({url: urlFormatted, success: function(result){
+                    console.log("row deleted successfully");
+               }});
+               //document.getElementById("productsTable").deleteRow(id);
+               $('table#productsTable tr#' + id).remove();
+               alert("done");
+
+               $.ajax({url: "seeall_api.php", success: function(result){
+                    console.log("json written in the file");
+               }});
+          }
+
+          </script>
+
+          <table id="productsTable">
+               <thead>
+                    <th>id</th>
+                    <th>name</th>
+                    <th>price</th>
+                    <th>dateCreated</th>
+                    <th>Action</th>
+               </thead>
+          </table>
+     </body>
+</html>

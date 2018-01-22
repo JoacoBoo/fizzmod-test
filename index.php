@@ -3,12 +3,12 @@ include_once("product.php");
 include_once("jsonreader.php");
 
 $json = Json_Reader::reader();
-var_dump($json);
+//var_dump($json);
 
 echo "<br>";
 
 $productsArray = Product::parseArray($json);
-var_dump($productsArray);
+//var_dump($productsArray);
 
 echo "<br>";
 
@@ -33,15 +33,16 @@ foreach ($productsArray as $oProduct) {
                         console.log(urlFormatted);
                         console.log($(".productId").val());
                        $.ajax({url: urlFormatted, success: function(result){
+                            console.log(result);
                            if (result == "1"){
-                                console.log("el salario es un costo mas");
-                                console.log(result);
                                 alert("The product does exist");
+                           } else if (result == "2") {
+                                alert("The entry is not a numeric input");
+                           } else if (result == "3") {
+                                alert("Write something please");
                            }
                            else {
                                 alert("Lamely, the product doesn't exist");
-                                console.log("viva la vejez");
-                                console.log(result);
                            }
                        }});
                    });
