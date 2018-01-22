@@ -13,6 +13,13 @@ echo Product::fetchAllJson();
      jsonArray = JSON.parse(json);
      console.log(jsonArray);
      console.log(json);
+
+     $.getJSON(json, function(data){
+          var productData;
+          $.each(data, function(key, value){
+               https://www.youtube.com/watch?v=AOfSuajwY-I
+          });
+     });
 </script>
 
 
